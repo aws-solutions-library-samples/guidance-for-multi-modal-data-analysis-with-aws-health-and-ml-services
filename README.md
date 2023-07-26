@@ -15,7 +15,7 @@ The following diagram provides an overview of the architecture and the steps fol
 
 All of the data analytics and AI modeling are done using [Amazon SageMaker](https://aws.amazon.com/sagemaker/). You can create the Amazon SageMaker domain by 1-click deployment:
 
-[![deployment](Figures/LaunchStack.jpg)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/template?stackName=sagemakerstack&templateURL=https://aws-opendata-demo.s3.amazonaws.com/sagemaker_template.yaml)  
+[![deployment](architecture/LaunchStack.jpg)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/template?stackName=sagemakerstack&templateURL=https://aws-opendata-demo.s3.amazonaws.com/sagemaker_template.yaml)  
 
 1. Store multimodal data with purpose-built Health AI services ([AWS HealthOmics](https://aws.amazon.com/omics/), [AWS HealthLake](https://aws.amazon.com/healthlake/), and [AWS HealthImaging](https://aws.amazon.com/healthlake/imaging/))
     * To store each data type in the purpose-built Health AI service, follow the artifacts in the corresponding folders. 
