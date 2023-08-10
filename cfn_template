@@ -33,6 +33,7 @@ Resources:
 
   SageMakerExecutionRole:
     Type: "AWS::IAM::Role"
+    DependsOn: HealthImagingImportJobRole
     Properties:
       RoleName: SageMakerStudioExecutionRole
       AssumeRolePolicyDocument:
