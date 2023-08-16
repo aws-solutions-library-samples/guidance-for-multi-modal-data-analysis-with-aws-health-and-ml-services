@@ -1,0 +1,95 @@
+{
+  "StartAt": "iterate_over_subjects",
+  "States": {
+    "iterate_over_subjects": {
+      "ItemsPath": "$.Subject",
+      "MaxConcurrency": 50,
+      "Type": "Map",
+      "Next": "Finish",
+      "Iterator": {
+        "StartAt": "AHI Radiomic Feature Extraction",
+        "States": {
+          "Fallback": {
+            "Type": "Pass",
+            "Result": "This iteration failed for some reason",
+            "End": true
+          },
+          "AHI Radiomic Feature Extraction": {
+            "Type": "Task",
+            "OutputPath": "$.ProcessingJobArn",
+            "Resource": "arn:aws:states:::sagemaker:createProcessingJob.sync",
+            "Retry": [
+              {
+                "ErrorEquals": [
+                  "SageMaker.AmazonSageMakerException"
+                ],
+                "IntervalSeconds": 15,
+                "MaxAttempts": 8,
+                "BackoffRate": 1.5
+              }
+            ],
+            "Catch": [
+              {
+                "ErrorEquals": [
+                  "States.TaskFailed"
+                ],
+                "Next": "Fallback"
+              }
+            ],
+            "Parameters": {
+              "ProcessingJobName.$": "$$.Execution.Input['PreprocessingJobName']",
+              "ProcessingInputs": [
+                {
+                  "InputName": "JSON",
+                  "AppManaged": false,
+                  "S3Input": {
+                    "S3Uri.$": "States.Format('##INPUT_DATA_S3URI##/{}' , $)",
+                    "LocalPath": "/opt/ml/processing/input",
+                    "S3DataType": "S3Prefix",
+                    "S3InputMode": "File",
+                    "S3DataDistributionType": "ShardedByS3Key",
+                    "S3CompressionType": "None"
+                  }
+                }
+              ],
+              "ProcessingOutputConfig": {
+                "Outputs": [
+                  {
+                    "OutputName": "radiomicsfeature",
+                    "AppManaged": false,
+                    "S3Output": {
+                      "S3Uri": "##OUTPUT_DATA_S3URI##",
+                      "LocalPath": "/opt/ml/processing/output/",
+                      "S3UploadMode": "EndOfJob"
+                    }
+                  }
+                ]
+              },
+              "AppSpecification": {
+                "ImageUri": "##ECR_IMAGE_URI##|",
+                "ContainerArguments.$": "States.Array('--datastore_id', $, '--feature_store_name', $$.Execution.Input['FeatureStoreName'], '--offline_store_s3uri', $$.Execution.Input['OfflineStoreS3Uri'])",
+                "ContainerEntrypoint": [
+                  "python3",
+                  "/opt/ahiradiomics.py"
+                ]
+              },
+              "RoleArn": "##IAM_ROLE_ARN##",
+              "ProcessingResources": {
+                "ClusterConfig": {
+                  "InstanceCount": 10,
+                  "InstanceType": "ml.m5.large",
+                  "VolumeSizeInGB": 5
+                }
+              }
+            },
+            "End": true
+          }
+        }
+      }
+    },
+    "Finish": {
+      "Type": "Succeed"
+    }
+  }
+}
+
