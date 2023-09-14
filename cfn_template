@@ -11,10 +11,22 @@ Parameters:
   ParameterSubnet2Id:
     Description: SubnetId, for Availability Zone 2 in the region in your VPC
     Type: AWS::EC2::Subnet::Id
-  
+  CreateS3BucketforSageMaker:
+    Description: Do you want to create a S3 Bucket name like sagemaker-AWS::Region-AWS::AccountId
+    Type: String
+    Default: false
+    AllowedValues:
+      - true
+      - false
+
+Conditions:
+  CreateS3Bucket: !Equals
+    - true
+    - !Ref 'CreateS3BucketforSageMaker'
 
 Resources:
   SageMakerBucket:
+    Condition: CreateS3Bucket
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Sub sagemaker-${AWS::Region}-${AWS::AccountId}
@@ -44,6 +56,10 @@ Resources:
               Service:
                 - sagemaker.amazonaws.com
                 - omics.amazonaws.com
+                - medical-imaging.amazonaws.com
+                - states.amazonaws.com
+                - codepipeline.amazonaws.com
+                - codebuild.amazonaws.com
             Action:
               - "sts:AssumeRole"
       Policies:
