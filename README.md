@@ -13,7 +13,7 @@ The following diagram provides an overview of the architecture and the steps fol
 
 #### Instructions 
 
-All of the data analytics and AI modeling are done using [Amazon SageMaker](https://aws.amazon.com/sagemaker/). You can create the Amazon SageMaker domain by 1-click deployment:
+All of the data analytics and AI modeling are done using [Amazon SageMaker](https://aws.amazon.com/sagemaker/). You can create the Amazon SageMaker domain by 1-click deployment (If you have S3 Bucket or IAM role with the same names used in the template, please adjust the template parameter values for them):
 
 [![deployment](architecture/LaunchStack.jpg)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/template?stackName=sagemakerstack&templateURL=https://aws-opendata-demo.s3.amazonaws.com/sagemaker_template.yaml)  
 

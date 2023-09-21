@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'Create resources needed for SageMaker Studio'
+Description: 'Create resources needed for the AWS Solution: SO9254'
 
 Parameters:
   ParameterVPCId:
