@@ -31,14 +31,10 @@ Once the CloudFormation template is created, go to Studio Domain created on Amaz
         * clinical - Run the notebook preprocess-multimodal-data/clinical/preprocess-clinical.ipynb to execute feature engineering and store the final set of clinical features in SageMaker Feature Store. 
         * medical imaging - Run the notebook preprocess-multimodal-data/medical-imaging/preprocess-imaging.ipynb to execute feature engineering and store the final set of radiomic features in SageMaker Feature Store.
 
-    At the end of this step, you have created three Feature Groups in SageMaker Feature Store, one for each data modality. We will use these features in the following steps to train a machine learning model and build visualization dashboards. 
+    At the end of this step, you have created three Feature Groups in SageMaker Feature Store, one for each data modality. We will use these features in the following steps to train a machine learning model.
 
 3. Build, train, test, and deploy machine learning models with Amazon SageMaker 
     * For the given use case of patients' outcome prediction, we will use [SageMaker AutoGluon](https://docs.aws.amazon.com/sagemaker/latest/dg/autogluon-tabular.html), an AutoML framework that ensembles multiple ML models to improve predictive performance. To train and test the ML model on the multimodal feature set, run the notebook train-test-ml-model/train-test-model.ipynb. This generates evaluation metrics (accuracy, precision, recall, and f1 score) for the four outcomes (hypertension, stroke, coronary heart disease, and Alzheimer's disease).
-
-4. Create data visualization dashboards with Amazon QuickSight 
-    * Follow the instructions in visualization-dashboard/README.md to use the interactive dashboards and get a comprehensive view of patients across all three data modalities. These dashboards mitigate the challenge of data siloes and help end users (eg. clinicians, bioinformaticians, radiologists) easily access, view, and compare clinical, genomic, and medical imaging data across individual patients and cohorts. 
-
 
 
 #### Security
