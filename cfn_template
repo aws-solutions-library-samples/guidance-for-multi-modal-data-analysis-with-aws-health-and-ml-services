@@ -11,6 +11,14 @@ Parameters:
   ParameterSubnet2Id:
     Description: SubnetId, for Availability Zone 2 in the region in your VPC
     Type: AWS::EC2::Subnet::Id
+  HealthImagingImportRoleName:
+    Type: String
+    Default: HealthImagingImportJobRole
+    Description: This is an IAM role used by Amazon HealthImaging to import data. If you have an IAM role with the same name, please change this name.
+  HealthOmicsImportRoleName:
+    Type: String
+    Default: OmicsUnifiedJobRole
+    Description: This is an IAM role used by Amazon HealthOmics to import data. If you have an IAM role with the same name, please change this name.
   CreateS3BucketforSageMaker:
     Description: Do you want to create a S3 Bucket name like sagemaker-AWS::Region-AWS::AccountId
     Type: String
@@ -83,7 +91,16 @@ Resources:
                 - "medical-imaging:Update*"
                 - "medical-imaging:StartDICOMImportJob"
                 - "medical-imaging:DeleteDatastore"
-              Resource: "*" 
+              Resource: "*"
+            - Effect: Allow
+              Action:
+                - "iam:GetUser"
+                - "iam:GetPolicy"
+                - "iam:CreatePolicy"
+                - "iam:GetRole"
+                - "iam:CreateRole"
+                - "iam:AttachRolePolicy"
+              Resource: "*"
             - Effect: "Allow"
               Action: 
                 - "iam:PassRole"
@@ -95,11 +112,13 @@ Resources:
         - arn:aws:iam::aws:policy/AmazonSageMakerFullAccess
         - arn:aws:iam::aws:policy/AmazonHealthLakeFullAccess
         - arn:aws:iam::aws:policy/AmazonOmicsFullAccess
+        - arn:aws:iam::aws:policy/AWSLakeFormationDataAdmin
+        - arn:aws:iam::aws:policy/AmazonAthenaFullAccess
 
   HealthImagingImportJobRole:
     Type: "AWS::IAM::Role"
     Properties:
-      RoleName: HealthImagingImportJobRole
+      RoleName: !Ref HealthImagingImportRoleName
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
@@ -130,7 +149,7 @@ Resources:
   OmicsAccessRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: OmicsUnifiedJobRole
+      RoleName: !Ref HealthOmicsImportRoleName
       AssumeRolePolicyDocument:
         Statement:
         - Action:
@@ -142,25 +161,20 @@ Resources:
         Version: '2012-10-17'
       Path: /
       Policies:
-      - PolicyName: omics-access
-        PolicyDocument:
-          Statement:
-          - Action:
-            - omics:*
-            Effect: Allow
-            Resource: '*'
-      - PolicyName: s3-access
-        PolicyDocument:
-          Statement:
-          - Action:
-            - s3:GetObject
-            - s3:GetBucketLocation
-            - s3:ListBucket
-            - s3:Put*
-            Effect: Allow
-            Resource:
-            - arn:aws:s3:::*
-            - arn:aws:s3:::*/*
+        - PolicyName: s3-access
+          PolicyDocument:
+            Statement:
+            - Action:
+                - s3:GetObject
+                - s3:GetBucketLocation
+                - s3:ListBucket
+                - s3:Put*
+              Effect: Allow
+              Resource:
+                - arn:aws:s3:::*
+                - arn:aws:s3:::*/*
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonOmicsFullAccess
 
   WorkshopDomain: 
     Type: AWS::SageMaker::Domain
@@ -183,5 +197,4 @@ Resources:
     DependsOn: WorkshopDomain
     
       
-  
 
