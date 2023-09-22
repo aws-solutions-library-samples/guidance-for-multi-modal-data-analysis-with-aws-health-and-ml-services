@@ -17,6 +17,8 @@ All of the data analytics and AI modeling are done using [Amazon SageMaker](http
 
 [![deployment](architecture/LaunchStack.jpg)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/template?stackName=sagemakerstack&templateURL=https://aws-opendata-demo.s3.amazonaws.com/sagemaker_template.yaml)  
 
+Once the CloudFormation template is created, go to Studio Domain created on Amazon SageMaker managment console, select the UserProfile provisioned and launch Studio application. Once the Studio application is ready, follow [this instruction](https://docs.aws.amazon.com/sagemaker/latest/dg/studio-tasks-git.html) to clone [this code repository](https://github.com/aws-solutions-library-samples/guidance-for-multimodal-hcls-data-analysis-with-omics-healthlake-imaging-and-sagemaker-on-aws.git) in SageMaker Studio.
+
 1. Store multimodal data with purpose-built Health AI services ([AWS HealthOmics](https://aws.amazon.com/omics/), [AWS HealthLake](https://aws.amazon.com/healthlake/), and [AWS HealthImaging](https://aws.amazon.com/healthlake/imaging/))
     * To store each data type in the purpose-built Health AI service, follow the artifacts in the corresponding folders. 
         * genomic - Run the notebook store-multimodal-data/genomic/store-analyze-genomicdata-with-awshealthomics.ipynb. This creates AWS HealthOmics data stores (Reference Store, Variant Store, and Annotation Store) to import reference genome, VCF files, and ClinVar annotation file. 
