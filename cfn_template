@@ -92,6 +92,7 @@ Resources:
                 - "medical-imaging:Update*"
                 - "medical-imaging:StartDICOMImportJob"
                 - "medical-imaging:DeleteDatastore"
+                - "medical-imaging:DeleteImageSet"
               Resource: "*"
             - Effect: Allow
               Action:
