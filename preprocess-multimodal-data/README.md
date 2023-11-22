@@ -2,7 +2,7 @@ Before running the preprocessing notebooks, you will need to create a SageMaker 
 
 ### Create a SageMaker domain
 
-You can skip this step and if you already have a SageMaker domain setup.
+You can skip this step if you already have a SageMaker domain setup and move on to provide the necessary persmissions.
 
 1. Go to the **Amazon SageMaker Console**
 2. Select **Admin configurations** on the left and then **Domains**.
