@@ -1,5 +1,7 @@
 Before running the preprocessing notebooks, you will need to create a SageMaker domain if you haven't already and provide the necessary Lake Formation and Athena permissions.
 
+The preprocessing notebooks directly take data from S3. For queries used to generate the S3 files used in the preprocessing notebooks, refer to the single-patient-records.ipynb notebook.
+
 ### Create a SageMaker domain
 
 You can skip this step if you already have a SageMaker domain setup and move on to provide the necessary persmissions.
@@ -18,3 +20,5 @@ You can skip this step if you already have a SageMaker domain setup and move on 
 4. Go to **IAM** service page. Click on **Roles**. Search for the execution role created in the previous step. Click on the execution role.
 5. Click on **Add permissions** and **Attach policies**. Select **AmazonAthenaFullAccess** and **Add permissions**.
 6. Go back to the SageMaker domain in your SageMaker console. Under **User profiles**, click on **Launch** and select **Studio**. Wait for the Studio to launch.
+
+
